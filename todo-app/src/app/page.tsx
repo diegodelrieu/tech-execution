@@ -6,6 +6,7 @@ import { type TodoItem, type TodoActions } from '@/types/todo';
 import { AddTodo } from '@/components/add-todo';
 import { TodoList } from '@/components/todo-list';
 import { updateTodoById, deleteTodoById, addChildTodo as addChildTodoHelper } from '@/utils/todo-helpers';
+import { toggleTodoCompletion } from '@/utils/completion-helpers';
 
 export default function Home() {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -23,10 +24,9 @@ export default function Home() {
 
   const toggleComplete = (id: string) => {
     setTodos(previousTodos => 
-      updateTodoById(previousTodos, id, todo => ({ 
-        ...todo, 
-        completed: !todo.completed 
-      }))
+      updateTodoById(previousTodos, id, todo => 
+        toggleTodoCompletion(todo, !todo.completed)
+      )
     );
   };
 
@@ -54,11 +54,21 @@ export default function Home() {
     );
   };
 
+  const editTodo = (id: string, newTitle: string) => {
+    setTodos(previousTodos => 
+      updateTodoById(previousTodos, id, todo => ({ 
+        ...todo, 
+        title: newTitle 
+      }))
+    );
+  };
+
   const actions: TodoActions = {
     onToggleComplete: toggleComplete,
     onDelete: deleteTodo,
     onAddChild: addChildTodo,
     onToggleExpanded: toggleExpanded,
+    onEdit: editTodo,
   };
 
   return (

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { type TodoItem, type TodoActions } from '@/types/todo';
 import { AddTodo } from './add-todo';
+import { EditableText } from './editable-text';
 
 interface TodoItemProperties {
   todo: TodoItem;
@@ -45,9 +46,11 @@ export function TodoItemComponent({ todo, actions, level = 0 }: TodoItemProperti
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
         />
         
-        <span className={`flex-1 ${todo.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-          {todo.title}
-        </span>
+        <EditableText
+          text={todo.title}
+          onSave={(newTitle) => actions.onEdit(todo.id, newTitle)}
+          className={todo.completed ? 'line-through text-gray-500' : 'text-gray-900'}
+        />
         
         <button
           onClick={() => setShowAddChild(!showAddChild)}
@@ -58,7 +61,16 @@ export function TodoItemComponent({ todo, actions, level = 0 }: TodoItemProperti
         </button>
         
         <button
-          onClick={() => actions.onDelete(todo.id)}
+          onClick={() => {
+            const hasChildren = todo.children.length > 0;
+            const confirmMessage = hasChildren 
+              ? `Delete "${todo.title}" and all its ${todo.children.length} child todo(s)?`
+              : `Delete "${todo.title}"?`;
+            
+            if (window.confirm(confirmMessage)) {
+              actions.onDelete(todo.id);
+            }
+          }}
           className="px-2 py-1 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
           type="button"
         >

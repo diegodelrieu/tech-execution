@@ -11,4 +11,5 @@ export interface TodoActions {
   onDelete: (id: string) => void;
   onAddChild: (parentId: string, title: string) => void;
   onToggleExpanded: (id: string) => void;
+  onEdit: (id: string, newTitle: string) => void;
 }
