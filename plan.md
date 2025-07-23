@@ -90,6 +90,8 @@ Create a hierarchical todo application using Next.js with React that supports CR
 2. Configure Tailwind CSS
 3. Create basic component structure
 4. Implement simple flat todo list
+5. **Quality Check**: Run ESLint unicorn 100 and fix all issues
+6. **Build Check**: Verify project builds properly
 
 ### Phase 2: Hierarchical Structure
 
@@ -97,6 +99,8 @@ Create a hierarchical todo application using Next.js with React that supports CR
 2. Implement nested todo rendering
 3. Add expand/collapse functionality
 4. Create add child todo functionality
+5. **Quality Check**: Run ESLint unicorn 100 and fix all issues
+6. **Build Check**: Verify project builds properly
 
 ### Phase 3: CRUD Operations
 
@@ -104,6 +108,8 @@ Create a hierarchical todo application using Next.js with React that supports CR
 2. Add edit/update capabilities
 3. Implement delete with cascade
 4. Add completion toggle
+5. **Quality Check**: Run ESLint unicorn 100 and fix all issues
+6. **Build Check**: Verify project builds properly
 
 ### Phase 4: Persistence & Polish
 
@@ -111,6 +117,8 @@ Create a hierarchical todo application using Next.js with React that supports CR
 2. Add error handling and validation
 3. Improve styling and user experience
 4. Final testing and refinement
+5. **Quality Check**: Run ESLint unicorn 100 and fix all issues
+6. **Build Check**: Verify project builds properly
 
 ## Technical Considerations
 
