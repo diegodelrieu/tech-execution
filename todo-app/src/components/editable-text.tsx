@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { TODO_MAX_LENGTH } from '@/utils/validation';
 
 interface EditableTextProperties {
   text: string;
@@ -44,15 +45,21 @@ export function EditableText({ text, onSave, className = '' }: EditableTextPrope
 
   if (isEditing) {
     return (
-      <input
-        ref={inputReference}
-        type="text"
-        value={editValue}
-        onChange={(event) => setEditValue(event.target.value)}
-        onBlur={handleSave}
-        onKeyDown={handleKeyDown}
-        className="flex-1 px-2 py-1 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-      />
+      <div className="flex-1">
+        <input
+          ref={inputReference}
+          type="text"
+          value={editValue}
+          onChange={(event) => setEditValue(event.target.value)}
+          onBlur={handleSave}
+          onKeyDown={handleKeyDown}
+          maxLength={TODO_MAX_LENGTH}
+          className="w-full px-2 py-1 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+        />
+        <div className="text-xs text-gray-500 mt-1">
+          {editValue.length}/{TODO_MAX_LENGTH} characters
+        </div>
+      </div>
     );
   }
 
