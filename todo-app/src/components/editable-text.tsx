@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { TODO_MAX_LENGTH } from '@/utils/validation';
+import { useState, useRef, useEffect } from "react";
+import { TODO_MAX_LENGTH } from "@/utils/validation";
 
 interface EditableTextProperties {
   text: string;
@@ -9,7 +9,11 @@ interface EditableTextProperties {
   className?: string;
 }
 
-export function EditableText({ text, onSave, className = '' }: EditableTextProperties) {
+export function EditableText({
+  text,
+  onSave,
+  className = "",
+}: EditableTextProperties) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(text);
   const inputReference = useRef<HTMLInputElement>(null);
@@ -36,9 +40,9 @@ export function EditableText({ text, onSave, className = '' }: EditableTextPrope
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSave();
-    } else if (event.key === 'Escape') {
+    } else if (event.key === "Escape") {
       handleCancel();
     }
   };
@@ -66,14 +70,15 @@ export function EditableText({ text, onSave, className = '' }: EditableTextPrope
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className={`flex-1 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded ${className}`}
+      className={`flex-1 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded break-words ${className}`}
       role="button"
       tabIndex={0}
       onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.key === "Enter" || event.key === " ") {
           setIsEditing(true);
         }
       }}
+      title={text}
     >
       {text}
     </span>
