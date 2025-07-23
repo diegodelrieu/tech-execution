@@ -1,18 +1,26 @@
-'use client';
+"use client";
 
-import { v4 as uuidVersion4 } from 'uuid';
-import { type TodoItem, type TodoActions } from '@/types/todo';
-import { AddTodo } from '@/components/add-todo';
-import { TodoList } from '@/components/todo-list';
-import { ErrorBoundary } from '@/components/error-boundary';
-import { TodoStats } from '@/components/todo-stats';
-import { updateTodoById, deleteTodoById, addChildTodo as addChildTodoHelper } from '@/utils/todo-helpers';
-import { toggleTodoCompletion } from '@/utils/completion-helpers';
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { validateTodoTitle } from '@/utils/validation';
+import { v4 as uuidVersion4 } from "uuid";
+import { useMemo } from "react";
+import { type TodoItem, type TodoActions } from "@/types/todo";
+import { AddTodo } from "@/components/add-todo";
+import { TodoList } from "@/components/todo-list";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { TodoStats } from "@/components/todo-stats";
+import {
+  updateTodoById,
+  deleteTodoById,
+  addChildTodo as addChildTodoHelper,
+} from "@/utils/todo-helpers";
+import { toggleTodoCompletion } from "@/utils/completion-helpers";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { validateTodoTitle } from "@/utils/validation";
 
 export default function Home() {
-  const [todos, setTodos] = useLocalStorage<TodoItem[]>('hierarchical-todos', []);
+  const [todos, setTodos] = useLocalStorage<TodoItem[]>(
+    "hierarchical-todos",
+    []
+  );
 
   const addTodo = (title: string) => {
     const validation = validateTodoTitle(title);
@@ -32,8 +40,8 @@ export default function Home() {
   };
 
   const toggleComplete = (id: string) => {
-    setTodos((previousTodos: TodoItem[]) => 
-      updateTodoById(previousTodos, id, todo => 
+    setTodos((previousTodos: TodoItem[]) =>
+      updateTodoById(previousTodos, id, (todo) =>
         toggleTodoCompletion(todo, !todo.completed)
       )
     );
@@ -57,14 +65,16 @@ export default function Home() {
       children: [],
       expanded: false,
     };
-    setTodos((previousTodos: TodoItem[]) => addChildTodoHelper(previousTodos, parentId, newTodo));
+    setTodos((previousTodos: TodoItem[]) =>
+      addChildTodoHelper(previousTodos, parentId, newTodo)
+    );
   };
 
   const toggleExpanded = (id: string) => {
-    setTodos((previousTodos: TodoItem[]) => 
-      updateTodoById(previousTodos, id, todo => ({ 
-        ...todo, 
-        expanded: !todo.expanded 
+    setTodos((previousTodos: TodoItem[]) =>
+      updateTodoById(previousTodos, id, (todo) => ({
+        ...todo,
+        expanded: !todo.expanded,
       }))
     );
   };
@@ -76,21 +86,24 @@ export default function Home() {
       return;
     }
 
-    setTodos((previousTodos: TodoItem[]) => 
-      updateTodoById(previousTodos, id, todo => ({ 
-        ...todo, 
-        title: newTitle.trim() 
+    setTodos((previousTodos: TodoItem[]) =>
+      updateTodoById(previousTodos, id, (todo) => ({
+        ...todo,
+        title: newTitle.trim(),
       }))
     );
   };
 
-  const actions: TodoActions = {
-    onToggleComplete: toggleComplete,
-    onDelete: deleteTodo,
-    onAddChild: addChildTodo,
-    onToggleExpanded: toggleExpanded,
-    onEdit: editTodo,
-  };
+  const actions: TodoActions = useMemo(
+    () => ({
+      onToggleComplete: toggleComplete,
+      onDelete: deleteTodo,
+      onAddChild: addChildTodo,
+      onToggleExpanded: toggleExpanded,
+      onEdit: editTodo,
+    }),
+    []
+  );
 
   return (
     <ErrorBoundary>
@@ -99,23 +112,23 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Hierarchical Todo App
           </h1>
-          
+
           <TodoStats todos={todos} />
-          
+
           <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
             <AddTodo onAdd={addTodo} />
           </div>
-          
+
           <div className="bg-white rounded-lg shadow-sm p-6">
             <TodoList todos={todos} actions={actions} />
-            
+
             {todos.length === 0 && (
               <div className="text-center text-gray-500 mt-8">
                 No todos yet. Add one above!
               </div>
             )}
           </div>
-          
+
           <div className="text-center text-xs text-gray-400 mt-4">
             Data is automatically saved to your browser&apos;s local storage
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { type TodoItem, type TodoActions } from "@/types/todo";
 import { AddTodo } from "./add-todo";
 import { EditableText } from "./editable-text";
@@ -11,7 +11,7 @@ interface TodoItemProperties {
   level?: number;
 }
 
-export function TodoItemComponent({
+export const TodoItemComponent = memo(function TodoItemComponent({
   todo,
   actions,
   level = 0,
@@ -19,7 +19,6 @@ export function TodoItemComponent({
   const [showAddChild, setShowAddChild] = useState(false);
   const hasChildren = todo.children.length > 0;
   const isExpanded = todo.expanded ?? false;
-
   const handleAddChild = (title: string) => {
     actions.onAddChild(todo.id, title);
     setShowAddChild(false);
@@ -112,4 +111,4 @@ export function TodoItemComponent({
       )}
     </div>
   );
-}
+});
